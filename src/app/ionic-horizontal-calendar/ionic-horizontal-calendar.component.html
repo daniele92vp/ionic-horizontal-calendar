@@ -1,0 +1,30 @@
+<ion-content class="mainWrapper">
+  <div class="topWrapper">
+      <p class="titleText">
+          Title configurable
+      </p>
+
+      <p class="monthText">{{monthSelected | date: 'MMMM':'':'de' }}</p>
+
+      <div class="daysWrapper">
+          <ion-icon name="arrow-back" class="leftRightArrow" (click)="prevDayOfWeek()"></ion-icon>
+          <div class="inline-calendar">
+              <div *ngFor="let day of daysOfTheWeek;" class="dayOfWeekWrapper" (click)="selectDay(day)"
+                  [class.daySelected]="daySelected === day">
+                  <ion-label class="numberDate">{{day | date: 'dd'}}</ion-label>
+                  <ion-label class="textDate">{{day | date: 'EEE' :'+0200':'de'}}</ion-label>
+              </div>
+          </div>
+          <ion-icon name="arrow-forward" class="leftRightArrow" (click)="nextDayOfWeek()"></ion-icon>
+      </div>
+  </div>
+  <p *ngIf="daySelected" class="availableTimesText">
+      Verfügbare Zeiten
+  </p>
+  <div *ngIf="daySelected" class="timeSheetWrapper">
+      <div *ngFor="let time of timeSheet" class="timeSheetRow" [class.notAvailable]="!time.availability"
+          [class.timeSelected]="time.id === idTimeSelected" (click)="time.availability && selectTime(time.id)">
+          <p class="timeText">{{time.time}}</p>
+      </div>
+  </div>
+</ion-content>
