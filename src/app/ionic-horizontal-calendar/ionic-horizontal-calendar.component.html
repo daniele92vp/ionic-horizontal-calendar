@@ -8,7 +8,7 @@
 
       <div class="daysWrapper">
           <ion-icon name="arrow-back" class="leftRightArrow" (click)="prevDayOfWeek()"></ion-icon>
-          <div class="inline-calendar" (swipe)="swipe($event)">
+          <div class="inline-calendar" (panleft)="swipeLeft($event)" (panright)="swipeRight($event)" (panend)="swipeEnd($event)">
               <div *ngFor="let day of daysOfTheWeek;" class="dayOfWeekWrapper"
                (click)="!daysToExclude.includes(day.name) && selectDay(day)"
                [class.daysNotAvailables]="daysToExclude.includes(day.name)"
