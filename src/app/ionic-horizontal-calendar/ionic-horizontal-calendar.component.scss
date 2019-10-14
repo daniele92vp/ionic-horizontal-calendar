@@ -1,15 +1,24 @@
-.mainWrapper {
+.ion-content {
   display: flex;
   flex-direction: column;
-  
+  height: 132px;
+  width: 100%;
+
+  .titleText{
+    margin: 0;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
   .topWrapper {
     background-color: rgb(252, 248, 248);
     border-bottom: 1px solid gray;
+    padding-top: 10px;
   }
 
   .monthText {
     color: rgb(151, 151, 151);
-    margin: 10px 0 0 0;
+    margin: 0;
     text-align: center;
   }
 

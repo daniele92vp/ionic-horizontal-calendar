@@ -1,7 +1,7 @@
-<ion-content class="mainWrapper">
+<ion-content class="ion-content">
     <div class="topWrapper">
-        <p class="titleText">
-            Title configurable
+        <p class="titleText" *ngIf="title">
+            {{title}}
         </p>
 
         <p class="monthText">{{monthSelected}}</p>
@@ -22,7 +22,4 @@
             <ion-icon name="arrow-forward" class="leftRightArrow" (click)="nextDayOfWeek()"></ion-icon>
         </div>
     </div>
-    <p *ngIf="daySelected" class="availableTimesText">
-        Verfügbare Zeiten
-    </p>
 </ion-content>

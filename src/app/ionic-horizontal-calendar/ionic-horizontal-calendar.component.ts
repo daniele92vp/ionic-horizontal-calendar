@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, Input } from '@angular/core';
 import * as moment from 'moment';
 import localization from 'moment/locale/de';
 
@@ -20,6 +20,7 @@ export class IonicHorizontalCalendarComponent {
   @Output() nextDayClicked = new EventEmitter<any>();
   @Output() prevDayClicked = new EventEmitter<any>();
   @Output() daySelectedEvent = new EventEmitter<any>();
+  @Input() title: string;
 
   get isFirstDayRenderedToday() {
     return moment(this.daysOfTheWeek[0].date).isSame(moment(), 'day');
@@ -39,11 +40,7 @@ export class IonicHorizontalCalendarComponent {
         date: moment(startingDay).add(i, 'days').toDate()
       }
       return dayToSave;
-    });
-
-    console.log(this.daysOfTheWeek[0].date === this.heute);
-    
-    
+    }); 
   }
 
   nextDayOfWeek() {
