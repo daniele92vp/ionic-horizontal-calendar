@@ -12,11 +12,11 @@
             <div class="inline-calendar" (panleft)="swipeLeft($event)" (panright)="swipeRight($event)"
                 (panend)="swipeEnd($event)">
                 <div *ngFor="let day of daysOfTheWeek;" class="dayOfWeekWrapper"
-                    (click)="!daysToExclude.includes(day.name) && selectDay(day)"
-                    [class.daysNotAvailables]="daysToExclude.includes(day.name)"
+                    (click)="!daysToExclude(day) && selectDay(day)"
+                    [class.daysNotAvailables]="daysToExclude(day)"
                     [class.daySelected]="daySelected === day">
                     <ion-label class="numberDate">{{day.number}}</ion-label>
-                    <ion-label class="textDate">{{day.name}}</ion-label>
+                    <ion-label class="textDate">{{day.name | titlecase}}</ion-label>
                 </div>
             </div>
             <ion-icon name="arrow-forward" class="leftRightArrow" (click)="nextDayOfWeek()"></ion-icon>
