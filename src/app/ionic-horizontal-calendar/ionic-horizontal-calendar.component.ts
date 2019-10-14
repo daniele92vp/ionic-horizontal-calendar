@@ -7,7 +7,7 @@ import localization from 'moment/locale/de';
   templateUrl: './ionic-horizontal-calendar.component.html',
   styleUrls: ['./ionic-horizontal-calendar.component.scss']
 })
-export class IonicHorizontalCalendarComponent implements OnInit {
+export class IonicHorizontalCalendarComponent {
   heute = moment();
   daysOfTheWeek = [];
   monthSelected: string;
@@ -16,7 +16,6 @@ export class IonicHorizontalCalendarComponent implements OnInit {
   idTimeSelected: number;
   timeSheet: any;
   daysToExclude = ['Sa.', 'So.'];
-  innerWidth: number;
   added = 0;
   @Output() nextDayClicked = new EventEmitter<any>();
   @Output() prevDayClicked = new EventEmitter<any>();
@@ -26,12 +25,6 @@ export class IonicHorizontalCalendarComponent implements OnInit {
   constructor() {
     moment.locale('de', localization);
     this.renderDaysOfWeek(this.heute);
-  }
-
-  ngOnInit() {
-    this.innerWidth = window.innerWidth;
-    console.log(this.innerWidth);
-
   }
 
   renderDaysOfWeek(startingDay) {
