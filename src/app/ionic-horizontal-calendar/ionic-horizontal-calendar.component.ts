@@ -21,6 +21,9 @@ export class IonicHorizontalCalendarComponent {
   @Output() prevDayClicked = new EventEmitter<any>();
   @Output() daySelectedEvent = new EventEmitter<any>();
 
+  get isFirstDayRenderedToday() {
+    return moment(this.daysOfTheWeek[0].date).isSame(moment(), 'day');
+  }
 
   constructor() {
     moment.locale('de', localization);
@@ -37,6 +40,10 @@ export class IonicHorizontalCalendarComponent {
       }
       return dayToSave;
     });
+
+    console.log(this.daysOfTheWeek[0].date === this.heute);
+    
+    
   }
 
   nextDayOfWeek() {
