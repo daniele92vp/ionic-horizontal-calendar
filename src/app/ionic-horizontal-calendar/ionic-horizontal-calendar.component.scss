@@ -1,7 +1,7 @@
 .mainWrapper {
   display: flex;
   flex-direction: column;
-
+  
   .topWrapper {
     background-color: rgb(252, 248, 248);
     border-bottom: 1px solid gray;
@@ -29,6 +29,10 @@
       display: flex;
       flex-direction: row;
       height: 100%;
+
+      .daysNotAvailables{
+        background-color: rgb(255, 235, 235);
+      }
 
       .daySelected {
         border-bottom: 3px solid red;

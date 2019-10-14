@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
-import { registerLocaleData } from '@angular/common';
-import localeDe from '@angular/common/locales/de';
-registerLocaleData(localeDe, 'de');
+import { Component, Output, EventEmitter } from '@angular/core';
+import * as moment from 'moment';
+import localization from 'moment/locale/de';
 
 @Component({
   selector: 'app-ionic-horizontal-calendar',
@@ -9,54 +8,59 @@ registerLocaleData(localeDe, 'de');
   styleUrls: ['./ionic-horizontal-calendar.component.scss']
 })
 export class IonicHorizontalCalendarComponent {
- // daysOfTheMonth = [];
- heute = new Date();
+ heute = moment();
  daysOfTheWeek = [];
- monthSelected: Date;
+ monthSelected: string;
  daySelected: number;
  currentFirstDayRendered: Date;
  idTimeSelected: number;
  timeSheet: any;
+ daysToExclude = ['Sa.', 'So.'];
+
+ @Output() nextDayClicked = new EventEmitter<any>();
+ @Output() prevDayClicked = new EventEmitter<any>();
+ @Output() daySelectedEvent = new EventEmitter<any>();
 
  constructor() {
+  moment.locale('de',localization);
    this.renderDaysOfWeek(this.heute);
  }
 
  renderDaysOfWeek(startingDay) {
-   this.monthSelected = new Date(startingDay);
+   this.monthSelected = moment(startingDay).format("MMMM");
    this.daysOfTheWeek = Array(7).fill(7).map((x, i) => {
-     let newDate = new Date();
-     return newDate.setDate(startingDay.getDate() + i);
+     let dayToSave = {
+       number: moment(startingDay).add(i, 'days').date(), 
+       name: moment(startingDay).add(i, 'days').format("ddd"),
+       date: moment(startingDay).add(i, 'days').toDate()
+      }
+    return dayToSave;
    });
    console.log('week', this.daysOfTheWeek);
    console.log('month', this.monthSelected);
  }
 
  nextDayOfWeek() {
-   let firstDayRendered = new Date(this.daysOfTheWeek[0]);
-   let lastDayRendered = this.daysOfTheWeek[this.daysOfTheWeek.length - 1];
-   let day = new Date();
-   day.setDate(firstDayRendered.getDate() + 1);
-   this.renderDaysOfWeek(day);
+   let firstDayRendered = moment(this.daysOfTheWeek[0].date).add(1, 'days');
+   this.renderDaysOfWeek(firstDayRendered);
+   this.nextDayClicked.emit();
  }
 
  prevDayOfWeek() {
-   let firstDayRendered = new Date(this.daysOfTheWeek[0]);
-   if (firstDayRendered.getDate() !== this.heute.getDate()) {
-     let day = new Date();
-     day.setDate(firstDayRendered.getDate() - 1);
-     this.renderDaysOfWeek(day);
+   if (!moment(this.daysOfTheWeek[0].date).isSame(moment(), 'day')) {
+    let firstDayRendered = moment(this.daysOfTheWeek[0].date).subtract(1, 'days');
+     this.renderDaysOfWeek(firstDayRendered);
+     this.prevDayClicked.emit();
    }
  }
 
  selectDay(day) {
    this.daySelected = day;
+   this.daySelectedEvent.emit(day);
    console.log(this.daySelected);
  }
 
- selectTime(idTime) {
-   this.idTimeSelected = idTime;
-   console.log(this.idTimeSelected);
-
+ swipe(event) {
+   console.log(event);
  }
 }
