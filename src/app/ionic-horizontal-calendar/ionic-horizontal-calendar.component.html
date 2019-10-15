@@ -11,12 +11,12 @@
                 [class.leftRightArrowDisabled]="isFirstDayRenderedToday"></ion-icon>
             <div class="inline-calendar" (panmove)="swipeMove($event)"
                 (panend)="swipeEnd()">
-                <div *ngFor="let day of displayedDays" class="dayOfWeekWrapper"
-                    (click)="!daysToExclude(day) && selectDay(day)"
-                    [class.daysNotAvailables]="daysToExclude(day)"
-                    [class.daySelected]="currentSelectedDay === day">
-                    <ion-label class="numberDate">{{day.number}}</ion-label>
-                    <ion-label class="textDate">{{day.name | titlecase}}</ion-label>
+                <div *ngFor="let dayOffset of generateRenderDays()" class="dayOfWeekWrapper"
+                    (click)="!daysToExclude(dayOffset) && selectDay(dayOffset)"
+                    [class.daysNotAvailables]="daysToExclude(dayOffset)"
+                    [class.daySelected]="compareDays(currentSelectedDay, dayOffset)">
+                    <ion-label class="numberDate">{{dayOffset.number}}</ion-label>
+                    <ion-label class="textDate">{{dayOffset.name | titlecase}}</ion-label>
                 </div>
             </div>
             <ion-icon name="arrow-forward" class="leftRightArrow" (click)="nextDayOfWeek()"></ion-icon>
