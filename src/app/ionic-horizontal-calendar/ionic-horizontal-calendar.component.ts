@@ -2,20 +2,14 @@ import {
   Component,
   Output,
   EventEmitter,
-  OnInit,
   Input,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  ElementRef
+  ElementRef,
+  ContentChild
 } from '@angular/core';
 import * as moment from 'moment';
-
-interface CalendarDay {
-  number: number;
-  name: string;
-  date: Date;
-  moment: moment.Moment;
-}
+import {CalendarDay, isCalendarDay, compareCalendarDays} from '../calendar-day';
 
 @Component({
   selector: 'ionic-horizontal-calendar',
@@ -25,6 +19,13 @@ interface CalendarDay {
 })
 export class IonicHorizontalCalendarComponent {
   //////////////////////////////////////////// INTERNAL VARIABLES ////////////////////////////////////////////
+  /** Array of days to render */
+  get renderDays() {
+    return Array(this.dayCount)
+      .fill(this.dayCount)
+      .map((_, i) => this.generateCalendarDay(this.firstDayRendered, i));
+  }
+
   /** A string representing the localized month selected, for displaying purposes. */
   get monthSelected() {
     return this.localeData.months(this.firstDayRendered.moment, 'MMMM');
@@ -45,20 +46,27 @@ export class IonicHorizontalCalendarComponent {
     return !this.minDate || this.firstDayRendered.moment.isAfter(this.minDate, 'day');
   }
 
-  /** Read-only, returns whether the calendar is allowed to scroll to the left. */
+  /** Read-only, returns whether the calendar is allowed to scroll to the right. */
   get canMoveForward() {
     return !this.maxDate || this.lastDayRendered.moment.isBefore(this.maxDate, 'day');
   }
+
+  /** The projected header, if any */
+  @ContentChild('header', {static: true}) content: any;
+
+  /**  */
+  compareDays = compareCalendarDays;
 
   //////////////////////////////////////////// PRIVATES ////////////////////////////////////////////
   /** Internal variable.  */
   private panExludedDelta = 0;
 
-  /** Current selected locale for moment. */
+  /** Read-only, current selected locale for moment. */
   private get localeData(): moment.Locale {
     return moment.localeData();
   }
 
+  /** Read-only, width in pixels of a step (pan delta required to actually scroll the calendar). */
   private get scrollStep(): number {
     const width = this.elementRef.nativeElement.clientWidth || 375;
     return ((width - 75) / this.dayCount) * this.scrollSensivity;
@@ -75,9 +83,6 @@ export class IonicHorizontalCalendarComponent {
   @Output() daySelected = new EventEmitter<CalendarDay>();
 
   //////////////////////////////////////////// INPUTS ////////////////////////////////////////////
-  /** Header to display above the calendar. */
-  @Input() title: string;
-
   /** The amount of days to display at once. */
   @Input() dayCount = 7;
 
@@ -104,8 +109,9 @@ export class IonicHorizontalCalendarComponent {
 
   constructor(private cdRef: ChangeDetectorRef, private elementRef: ElementRef) {}
 
+  /** Generate a CalendarDay object for a date, optionally offsetted by an arbitrary amount of days. */
   generateCalendarDay(date: moment.MomentInput | CalendarDay, daysToAdd?: number): CalendarDay {
-    let effectiveDate = this.isCalendarDay(date) ? moment(date.moment) : moment(date);
+    let effectiveDate = isCalendarDay(date) ? moment(date.moment) : moment(date);
     // Apply days delta to date we're outputting
     if (daysToAdd > 0) {
       effectiveDate = effectiveDate.add(daysToAdd, 'days');
@@ -119,12 +125,6 @@ export class IonicHorizontalCalendarComponent {
       date: effectiveDate.toDate(),
       moment: effectiveDate
     };
-  }
-
-  generateRenderDays() {
-    return Array(this.dayCount)
-      .fill(this.dayCount)
-      .map((_, i) => this.generateCalendarDay(this.firstDayRendered, i));
   }
 
   /** Moves the calendar forward by one day. */
@@ -163,14 +163,5 @@ export class IonicHorizontalCalendarComponent {
       this.nextDayOfWeek();
       this.panExludedDelta -= this.scrollStep;
     }
-  }
-
-  /// HELPER METHODS ///
-  compareDays(day1: CalendarDay, day2: CalendarDay) {
-    return day1 && day2 && day1.moment && day2.moment && day1.moment.isSame(day2.moment);
-  }
-
-  private isCalendarDay(object: any): object is CalendarDay {
-    return object && object.date && object.number && object.name && object.moment;
   }
 }
