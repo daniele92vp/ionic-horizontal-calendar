@@ -15,6 +15,7 @@ import { TestComponent } from './test/test.component';
   declarations: [AppComponent, IonicHorizontalCalendarComponent, TestComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  exports: [IonicHorizontalCalendarComponent],
   providers: [
     StatusBar,
     SplashScreen,

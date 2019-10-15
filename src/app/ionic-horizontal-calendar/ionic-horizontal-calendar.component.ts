@@ -18,7 +18,7 @@ interface CalendarDay {
 }
 
 @Component({
-  selector: 'app-ionic-horizontal-calendar',
+  selector: 'ionic-horizontal-calendar',
   templateUrl: './ionic-horizontal-calendar.component.html',
   styleUrls: ['./ionic-horizontal-calendar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -34,7 +34,7 @@ export class IonicHorizontalCalendarComponent {
   currentSelectedDay: CalendarDay;
 
   /** First date to render, used to build displayedDays. */
-  firstDayRendered: CalendarDay;
+  firstDayRendered = this.generateCalendarDay(new Date());
 
   get lastDayRendered(): CalendarDay {
     return this.generateCalendarDay(this.firstDayRendered, this.dayCount - 1);
@@ -97,15 +97,12 @@ export class IonicHorizontalCalendarComponent {
   @Input()
   set locale(loc: string) {
     moment.updateLocale(loc, {});
-    // this.renderDaysOfWeek(moment());
   }
   get locale() {
     return moment.locale();
   }
 
-  constructor(private cdRef: ChangeDetectorRef, private elementRef: ElementRef) {
-    this.firstDayRendered = this.generateCalendarDay(new Date());
-  }
+  constructor(private cdRef: ChangeDetectorRef, private elementRef: ElementRef) {}
 
   generateCalendarDay(date: moment.MomentInput | CalendarDay, daysToAdd?: number): CalendarDay {
     let effectiveDate = this.isCalendarDay(date) ? moment(date.moment) : moment(date);
