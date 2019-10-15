@@ -5,7 +5,8 @@ import {
   OnInit,
   Input,
   ChangeDetectionStrategy,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  ElementRef
 } from '@angular/core';
 import * as moment from 'moment';
 
@@ -23,7 +24,7 @@ interface CalendarDay {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IonicHorizontalCalendarComponent {
-  /// INTERNAL VARIABLES ///
+  //////////////////////////////////////////// INTERNAL VARIABLES ////////////////////////////////////////////
   /** A string representing the localized month selected, for displaying purposes. */
   get monthSelected() {
     return this.localeData.months(this.firstDayRendered.moment, 'MMMM');
@@ -49,7 +50,7 @@ export class IonicHorizontalCalendarComponent {
     return !this.maxDate || this.lastDayRendered.moment.isBefore(this.maxDate, 'day');
   }
 
-  /// PRIVATES ///
+  //////////////////////////////////////////// PRIVATES ////////////////////////////////////////////
   /** Internal variable.  */
   private panExludedDelta = 0;
 
@@ -58,7 +59,12 @@ export class IonicHorizontalCalendarComponent {
     return moment.localeData();
   }
 
-  /// OUTPUTS ///
+  private get scrollStep(): number {
+    const width = this.elementRef.nativeElement.clientWidth || 375;
+    return ((width - 75) / this.dayCount) * this.scrollSensivity;
+  }
+
+  /////////////////////////////////////////////// OUTPUTS ////////////////////////////////////////////
   /** Emits whenever the next day button is pressed. */
   @Output() nextDayClicked = new EventEmitter<any>();
 
@@ -68,7 +74,7 @@ export class IonicHorizontalCalendarComponent {
   /** Emits the new selected day whenever it is changed. */
   @Output() daySelected = new EventEmitter<CalendarDay>();
 
-  /// INPUTS ///
+  //////////////////////////////////////////// INPUTS ////////////////////////////////////////////
   /** Header to display above the calendar. */
   @Input() title: string;
 
@@ -84,6 +90,9 @@ export class IonicHorizontalCalendarComponent {
   /** Max date allowed. */
   @Input() maxDate: moment.MomentInput;
 
+  /** Scrolling sensivity when panning the days. */
+  @Input() scrollSensivity = 1.0;
+
   /** moment's locale */
   @Input()
   set locale(loc: string) {
@@ -94,7 +103,7 @@ export class IonicHorizontalCalendarComponent {
     return moment.locale();
   }
 
-  constructor(private cdRef: ChangeDetectorRef) {
+  constructor(private cdRef: ChangeDetectorRef, private elementRef: ElementRef) {
     this.firstDayRendered = this.generateCalendarDay(new Date());
   }
 
@@ -150,12 +159,12 @@ export class IonicHorizontalCalendarComponent {
 
   /** Handler for when swiping is active and changes offset. */
   swipeMove(event): void {
-    if (event.deltaX - this.panExludedDelta > 40) {
+    if (event.deltaX - this.panExludedDelta > this.scrollStep) {
       this.prevDayOfWeek();
-      this.panExludedDelta += 40;
-    } else if (event.deltaX - this.panExludedDelta < -40) {
+      this.panExludedDelta += this.scrollStep;
+    } else if (event.deltaX - this.panExludedDelta < -this.scrollStep) {
       this.nextDayOfWeek();
-      this.panExludedDelta -= 40;
+      this.panExludedDelta -= this.scrollStep;
     }
   }
 

@@ -1,33 +1,33 @@
 <ion-content class="ion-content">
-  <div class="topWrapper">
-    <p class="titleText" *ngIf="title">
+  <div class="top-wrapper">
+    <p class="title-text" *ngIf="title">
       {{ title }}
     </p>
 
-    <p class="monthText">{{ monthSelected }}</p>
+    <p class="month-text">{{ monthSelected }}</p>
 
-    <div class="daysWrapper">
+    <div class="days-wrapper">
       <ion-icon
         name="arrow-back"
-        class="leftRightArrow"
+        class="arrow"
         (click)="prevDayOfWeek()"
         [class.arrow-disabled]="!canMoveBack"
       ></ion-icon>
       <div class="inline-calendar" (panmove)="swipeMove($event)" (panend)="swipeEnd()">
         <div
           *ngFor="let dayOffset of generateRenderDays()"
-          class="dayOfWeekWrapper"
+          class="day-of-week-wrapper"
           (click)="!daysToExclude(dayOffset) && selectDay(dayOffset)"
-          [class.daysNotAvailables]="daysToExclude(dayOffset)"
-          [class.daySelected]="compareDays(currentSelectedDay, dayOffset)"
+          [class.day-unavailable]="daysToExclude(dayOffset)"
+          [class.day-selected]="compareDays(currentSelectedDay, dayOffset)"
         >
-          <ion-label class="numberDate">{{ dayOffset.number }}</ion-label>
-          <ion-label class="textDate">{{ dayOffset.name | titlecase }}</ion-label>
+          <ion-label class="number-date">{{ dayOffset.number }}</ion-label>
+          <ion-label class="text-date">{{ dayOffset.name | titlecase }}</ion-label>
         </div>
       </div>
       <ion-icon
         name="arrow-forward"
-        class="leftRightArrow"
+        class="arrow"
         (click)="nextDayOfWeek()"
         [class.arrow-disabled]="!canMoveForward"
       ></ion-icon>
