@@ -10,11 +10,11 @@
             <ion-icon name="arrow-back" class="leftRightArrow" (click)="prevDayOfWeek()"
                 [class.leftRightArrowDisabled]="isFirstDayRenderedToday"></ion-icon>
             <div class="inline-calendar" (panmove)="swipeMove($event)"
-                (panend)="swipeEnd($event)">
-                <div *ngFor="let day of daysOfTheWeek;" class="dayOfWeekWrapper"
+                (panend)="swipeEnd()">
+                <div *ngFor="let day of displayedDays" class="dayOfWeekWrapper"
                     (click)="!daysToExclude(day) && selectDay(day)"
                     [class.daysNotAvailables]="daysToExclude(day)"
-                    [class.daySelected]="daySelected === day">
+                    [class.daySelected]="currentSelectedDay === day">
                     <ion-label class="numberDate">{{day.number}}</ion-label>
                     <ion-label class="textDate">{{day.name | titlecase}}</ion-label>
                 </div>
