@@ -87,21 +87,17 @@ export class IonicHorizontalCalendarComponent {
     this.daySelectedEvent.emit(day);
   }
 
-  swipeLeft(event) {
-    if (Math.abs(event.deltaX) - this.panExludedDelta > 40) {
-      this.nextDayOfWeek();
-      this.panExludedDelta += 40;
-    }
-  }
-
   swipeEnd(event) {
     this.panExludedDelta = 0;
   }
 
-  swipeRight(event) {
-    if (Math.abs(event.deltaX) - this.panExludedDelta > 40) {
+  swipeMove(event) {
+    if (event.deltaX - this.panExludedDelta > 40) {
       this.prevDayOfWeek();
       this.panExludedDelta += 40;
+    } else if (event.deltaX - this.panExludedDelta < -40) {
+      this.nextDayOfWeek();
+      this.panExludedDelta -= 40;
     }
   }
 }
