@@ -4,7 +4,7 @@
   height: 132px;
   width: 100%;
 
-  .titleText{
+  .titleText {
     margin: 0;
     margin-bottom: 10px;
     text-align: center;
@@ -33,7 +33,7 @@
       width: 10%;
     }
 
-    .leftRightArrowDisabled{
+    .arrow-disabled {
       opacity: 0.3;
     }
 
@@ -43,7 +43,7 @@
       flex-direction: row;
       height: 100%;
 
-      .daysNotAvailables{
+      .daysNotAvailables {
         background-color: rgb(255, 235, 235);
       }
 

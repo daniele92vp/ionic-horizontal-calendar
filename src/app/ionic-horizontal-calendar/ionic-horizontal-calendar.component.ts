@@ -24,19 +24,30 @@ interface CalendarDay {
 })
 export class IonicHorizontalCalendarComponent {
   /// INTERNAL VARIABLES ///
-  /** Array of CalendarDays currently displayed. */
-  displayedDays: CalendarDay[] = [];
-
   /** A string representing the localized month selected, for displaying purposes. */
   get monthSelected() {
-    return this.localeData.months(this.currentFirstDayRendered.moment, 'MMMM');
+    return this.localeData.months(this.firstDayRendered.moment, 'MMMM');
   }
 
   /** The selected CalendarDay, for displaying purposes. */
   currentSelectedDay: CalendarDay;
 
   /** First date to render, used to build displayedDays. */
-  currentFirstDayRendered: CalendarDay;
+  firstDayRendered: CalendarDay;
+
+  get lastDayRendered(): CalendarDay {
+    return this.generateCalendarDay(this.firstDayRendered, this.dayCount - 1);
+  }
+
+  /** Read-only, returns whether the calendar is allowed to scroll to the left. */
+  get canMoveBack() {
+    return !this.minDate || this.firstDayRendered.moment.isAfter(this.minDate, 'day');
+  }
+
+  /** Read-only, returns whether the calendar is allowed to scroll to the left. */
+  get canMoveForward() {
+    return !this.maxDate || this.lastDayRendered.moment.isBefore(this.maxDate, 'day');
+  }
 
   /// PRIVATES ///
   /** Internal variable.  */
@@ -55,17 +66,23 @@ export class IonicHorizontalCalendarComponent {
   @Output() prevDayClicked = new EventEmitter<any>();
 
   /** Emits the new selected day whenever it is changed. */
-  @Output() daySelected = new EventEmitter<any>();
+  @Output() daySelected = new EventEmitter<CalendarDay>();
 
   /// INPUTS ///
   /** Header to display above the calendar. */
   @Input() title: string;
 
   /** The amount of days to display at once. */
-  @Input() dayCount: number;
+  @Input() dayCount = 7;
 
   /** Callback to select days that should be excluded from selection. */
   @Input() daysToExclude = (day: CalendarDay) => day.date.getDay() === 6 || day.date.getDay() === 0;
+
+  /** Min date allowed. */
+  @Input() minDate: moment.MomentInput;
+
+  /** Max date allowed. */
+  @Input() maxDate: moment.MomentInput;
 
   /** moment's locale */
   @Input()
@@ -77,12 +94,8 @@ export class IonicHorizontalCalendarComponent {
     return moment.locale();
   }
 
-  get isFirstDayRenderedToday() {
-    return this.currentFirstDayRendered.moment.isSame(moment(), 'day');
-  }
-
   constructor(private cdRef: ChangeDetectorRef) {
-    this.currentFirstDayRendered = this.generateCalendarDay(new Date());
+    this.firstDayRendered = this.generateCalendarDay(new Date());
   }
 
   generateCalendarDay(date: moment.MomentInput | CalendarDay, daysToAdd?: number): CalendarDay {
@@ -103,21 +116,23 @@ export class IonicHorizontalCalendarComponent {
   }
 
   generateRenderDays() {
-    return Array(7)
-      .fill(7)
-      .map((_, i) => this.generateCalendarDay(this.currentFirstDayRendered, i));
+    return Array(this.dayCount)
+      .fill(this.dayCount)
+      .map((_, i) => this.generateCalendarDay(this.firstDayRendered, i));
   }
 
   /** Moves the calendar forward by one day. */
   nextDayOfWeek() {
-    this.currentFirstDayRendered = this.generateCalendarDay(this.currentFirstDayRendered, 1);
-    this.nextDayClicked.emit();
+    if (this.canMoveForward) {
+      this.firstDayRendered = this.generateCalendarDay(this.firstDayRendered, 1);
+      this.nextDayClicked.emit();
+    }
   }
 
   /** Moves the calendar backward by one day. */
   prevDayOfWeek() {
-    if (!this.currentFirstDayRendered.moment.isSame(moment(), 'day')) {
-      this.currentFirstDayRendered = this.generateCalendarDay(this.currentFirstDayRendered, -1);
+    if (this.canMoveBack) {
+      this.firstDayRendered = this.generateCalendarDay(this.firstDayRendered, -1);
       this.prevDayClicked.emit();
     }
   }
