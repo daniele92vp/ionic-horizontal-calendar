@@ -1,33 +1,36 @@
 .top-wrapper {
-  background-color: rgb(252, 248, 248);
-  border-bottom: 1px solid gray;
-  padding-top: 10px;
+  background-color: var(--background-color-calendar, rgb(252, 248, 248));
+  border-bottom: var(--border-botto-calendar, 1px solid gray);
+  padding-top: var(--padding-top-calendar, 10px);
 
   .header {
-    margin: 0;
-    margin-bottom: 10px;
-    text-align: center;
+    margin: var(--margin-header, 0);
+    margin-bottom: var(--margin-bottom-header, 10px);
+    text-align: var(--text-align-header, center);
+    display: var(--display-header, flex);
+    align-items: var(--align-items-header, center);
+    justify-content: var(--justify-content-header, center);
   }
 
   .month-text {
-    color: rgb(151, 151, 151);
-    margin: 0;
-    text-align: center;
+    color: var(--color-month, rgb(151, 151, 151));
+    margin: var(--margin-month, 0);
+    text-align: var(--text-align-month, center);
   }
 
   .days-wrapper {
-    width: 100%;
-    height: 60px;
+    width: var(--width-days, 100%);
+    height: var(--height-days, 60px);
     display: flex;
     flex-direction: row;
     align-items: center;
 
     .arrow {
-      width: 10%;
+      width: var(--width-arrow, 10%);
     }
 
     .arrow-disabled {
-      opacity: 0.3;
+      opacity: var(--opacity-disabled-arrow, 0.3);
     }
 
     .inline-calendar {
@@ -37,11 +40,11 @@
       height: 100%;
 
       .day-unavailable {
-        background-color: rgb(255, 235, 235);
+        background-color: var(--background-color-day-unavailable, rgb(255, 235, 235));
       }
 
       .day-selected {
-        border-bottom: 3px solid red;
+        border-bottom: var(--border-bottom-day-selected, 3px solid red);
       }
 
       .day-of-week-wrapper {
@@ -51,14 +54,23 @@
         justify-content: center;
 
         .number-date {
-          font-size: 25px;
-          text-align: center;
+          font-size: var(--font-size-number-date, 25px);
+          text-align: var(--text-align-number-date, center);
+          color: var(--color-number-date, black);
         }
 
         .text-date {
-          font-size: 12px;
-          color: rgb(151, 151, 151);
-          text-align: center;
+          font-size: var(--font-size-text-date, 12px);
+          color: var(--color-text-date, rgb(151, 151, 151));
+          text-align: var(--text-align-text-date, center);
+        }
+
+        .number-day-unavailable {
+          color: var(--color-number-day-unavailable, black);
+        }
+
+        .text-day-unavailable{
+          color: var(--color-text-day-unavailable, black);
         }
       }
     }

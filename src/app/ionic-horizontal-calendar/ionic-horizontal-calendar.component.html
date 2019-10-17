@@ -20,8 +20,8 @@
         [class.day-unavailable]="daysToExclude(dayOffset)"
         [class.day-selected]="compareDays(currentSelectedDay, dayOffset)"
       >
-        <ion-label class="number-date">{{ dayOffset.number }}</ion-label>
-        <ion-label class="text-date">{{ dayOffset.name | titlecase }}</ion-label>
+        <ion-label class="number-date" [class.number-day-unavailable]="daysToExclude(dayOffset)">{{ dayOffset.number }}</ion-label>
+        <ion-label class="text-date" [class.text-day-unavailable]="daysToExclude(dayOffset)">{{ dayOffset.name | titlecase }}</ion-label>
       </div>
     </div>
     <ion-icon
