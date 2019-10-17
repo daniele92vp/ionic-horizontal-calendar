@@ -8,11 +8,13 @@ import {
   ElementRef,
   ContentChild
 } from '@angular/core';
-import * as moment from 'moment';
-import {CalendarDay, isCalendarDay, compareCalendarDays} from '../calendar-day';
+import * as _moment from 'moment';
+import {CalendarDay, isCalendarDay, compareCalendarDays} from './calendar-day';
+
+const moment = _moment;
 
 @Component({
-  selector: 'ionic-horizontal-calendar',
+  selector: 'lib-horizontal-calendar',
   templateUrl: './ionic-horizontal-calendar.component.html',
   styleUrls: ['./ionic-horizontal-calendar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -62,7 +64,7 @@ export class IonicHorizontalCalendarComponent {
   private panExludedDelta = 0;
 
   /** Read-only, current selected locale for moment. */
-  private get localeData(): moment.Locale {
+  private get localeData(): _moment.Locale {
     return moment.localeData();
   }
 
@@ -90,10 +92,10 @@ export class IonicHorizontalCalendarComponent {
   @Input() daysToExclude = (day: CalendarDay) => day.date.getDay() === 6 || day.date.getDay() === 0;
 
   /** Min date allowed. */
-  @Input() minDate: moment.MomentInput;
+  @Input() minDate: _moment.MomentInput;
 
   /** Max date allowed. */
-  @Input() maxDate: moment.MomentInput;
+  @Input() maxDate: _moment.MomentInput;
 
   /** Scrolling sensivity when panning the days. */
   @Input() scrollSensivity = 1.0;
@@ -110,7 +112,7 @@ export class IonicHorizontalCalendarComponent {
   constructor(private cdRef: ChangeDetectorRef, private elementRef: ElementRef) {}
 
   /** Generate a CalendarDay object for a date, optionally offsetted by an arbitrary amount of days. */
-  generateCalendarDay(date: moment.MomentInput | CalendarDay, daysToAdd?: number): CalendarDay {
+  generateCalendarDay(date: _moment.MomentInput | CalendarDay, daysToAdd?: number): CalendarDay {
     let effectiveDate = isCalendarDay(date) ? moment(date.moment) : moment(date);
     // Apply days delta to date we're outputting
     if (daysToAdd > 0) {

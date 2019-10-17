@@ -1,0 +1,27 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/ionic-horizontal-calendar",
+  "lib": {
+    "entryFile": "src/public-api.ts"
+  },
+  "whitelistedNonPeerDependencies": [
+    "moment",
+    "@angular/animations",
+    "@angular/common",
+    "@angular/compiler",
+    "@angular/core",
+    "@angular/forms",
+    "@angular/platform-browser",
+    "@angular/platform-browser-dynamic",
+    "@angular/router",
+    "@ionic-native/core",
+    "@ionic-native/splash-screen",
+    "@ionic-native/status-bar",
+    "@ionic/angular",
+    "hammerjs",
+    "moment",
+    "rxjs",
+    "tslib",
+    "zone.js"
+  ]
+}
