@@ -10,12 +10,14 @@
     display: var(--display-header, flex);
     align-items: var(--align-items-header, center);
     justify-content: var(--justify-content-header, center);
+    font-size: var(--font-size-header, 20px);
   }
 
   .month-text {
     color: var(--color-month, rgb(151, 151, 151));
     margin: var(--margin-month, 0);
     text-align: var(--text-align-month, center);
+    font-size: var(--font-size-month, 18px);
   }
 
   .days-wrapper {

@@ -9,7 +9,7 @@
     <ion-icon
       name="arrow-back"
       class="arrow"
-      (click)="prevDayOfWeek()"
+      (click)="prev()"
       [class.arrow-disabled]="!canMoveBack"
     ></ion-icon>
     <div class="inline-calendar" (panmove)="swipeMove($event)" (panend)="swipeEnd()">
@@ -27,7 +27,7 @@
     <ion-icon
       name="arrow-forward"
       class="arrow"
-      (click)="nextDayOfWeek()"
+      (click)="next()"
       [class.arrow-disabled]="!canMoveForward"
     ></ion-icon>
   </div>

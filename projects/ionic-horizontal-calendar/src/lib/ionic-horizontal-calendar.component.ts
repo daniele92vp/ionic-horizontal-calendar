@@ -6,20 +6,19 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   ElementRef,
-  ContentChild
+  ContentChild,
+  OnInit
 } from '@angular/core';
-import * as _moment from 'moment';
-import {CalendarDay, isCalendarDay, compareCalendarDays} from './calendar-day';
-
-const moment = _moment;
+import * as moment from 'moment';
+import { CalendarDay, isCalendarDay, compareCalendarDays } from '../calendar-day';
 
 @Component({
-  selector: 'lib-horizontal-calendar',
+  selector: 'ionic-horizontal-calendar',
   templateUrl: './ionic-horizontal-calendar.component.html',
   styleUrls: ['./ionic-horizontal-calendar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class IonicHorizontalCalendarComponent {
+export class IonicHorizontalCalendarComponent implements OnInit {
   //////////////////////////////////////////// INTERNAL VARIABLES ////////////////////////////////////////////
   /** Array of days to render */
   get renderDays() {
@@ -37,7 +36,7 @@ export class IonicHorizontalCalendarComponent {
   currentSelectedDay: CalendarDay;
 
   /** First date to render, used to build displayedDays. */
-  firstDayRendered = this.generateCalendarDay(new Date());
+  firstDayRendered: CalendarDay;
 
   get lastDayRendered(): CalendarDay {
     return this.generateCalendarDay(this.firstDayRendered, this.dayCount - 1);
@@ -54,7 +53,7 @@ export class IonicHorizontalCalendarComponent {
   }
 
   /** The projected header, if any */
-  @ContentChild('header', {static: true}) content: any;
+  @ContentChild('header', { static: true }) content: any;
 
   /**  */
   compareDays = compareCalendarDays;
@@ -63,8 +62,11 @@ export class IonicHorizontalCalendarComponent {
   /** Internal variable.  */
   private panExludedDelta = 0;
 
+  /** Internal variable */
+  private initialDateInternal = new Date();
+
   /** Read-only, current selected locale for moment. */
-  private get localeData(): _moment.Locale {
+  private get localeData(): moment.Locale {
     return moment.localeData();
   }
 
@@ -89,13 +91,13 @@ export class IonicHorizontalCalendarComponent {
   @Input() dayCount = 7;
 
   /** Callback to select days that should be excluded from selection. */
-  @Input() daysToExclude = (day: CalendarDay) => day.date.getDay() === 6 || day.date.getDay() === 0;
+  @Input() daysToExclude = (day: CalendarDay) => day.date.getDay() === 6 || day.date.getDay() === 0 || moment(day.date).isBefore(this.minDate);
 
   /** Min date allowed. */
-  @Input() minDate: _moment.MomentInput;
+  @Input() minDate: moment.MomentInput;
 
   /** Max date allowed. */
-  @Input() maxDate: _moment.MomentInput;
+  @Input() maxDate: moment.MomentInput;
 
   /** Scrolling sensivity when panning the days. */
   @Input() scrollSensivity = 1.0;
@@ -109,10 +111,31 @@ export class IonicHorizontalCalendarComponent {
     return moment.locale();
   }
 
-  constructor(private cdRef: ChangeDetectorRef, private elementRef: ElementRef) {}
+  /** Make autoselection of the first day when component rendered */
+  @Input() firstDayAutoSelected = false;
+
+  /** Display mode, can be daily or weekly */
+  @Input() displayMode: 'daily' | 'weekly' = 'daily';
+
+  constructor(private cdRef: ChangeDetectorRef, private elementRef: ElementRef) {
+   
+  }
+
+  ngOnInit(): void {
+    if (this.displayMode === 'weekly') {
+      let firstDayOfTheWeek = moment(this.initialDateInternal).weekday(0);
+      this.firstDayRendered = this.generateCalendarDay(firstDayOfTheWeek);
+    } else {
+      this.firstDayRendered = this.generateCalendarDay(this.initialDateInternal);
+    }
+    if (this.firstDayAutoSelected) {
+      let calendarDayToday = this.generateCalendarDay(this.initialDateInternal);
+      this.selectDay(calendarDayToday);
+    }
+  }
 
   /** Generate a CalendarDay object for a date, optionally offsetted by an arbitrary amount of days. */
-  generateCalendarDay(date: _moment.MomentInput | CalendarDay, daysToAdd?: number): CalendarDay {
+  generateCalendarDay(date: moment.MomentInput | CalendarDay, daysToAdd?: number): CalendarDay {
     let effectiveDate = isCalendarDay(date) ? moment(date.moment) : moment(date);
     // Apply days delta to date we're outputting
     if (daysToAdd > 0) {
@@ -129,18 +152,42 @@ export class IonicHorizontalCalendarComponent {
     };
   }
 
-  /** Moves the calendar forward by one day. */
-  nextDayOfWeek() {
-    if (this.canMoveForward) {
+    /** Generate a CalendarDay object for a date, optionally offsetted by an arbitrary amount of days. */
+    generateCalendarWeekly(date: moment.MomentInput | CalendarDay, weekToAdd?: number): CalendarDay {
+      let effectiveDate = isCalendarDay(date) ? moment(date.moment) : moment(date);
+      // Apply days delta to date we're outputting
+      if (weekToAdd > 0) {
+        effectiveDate = effectiveDate.add(weekToAdd, 'weeks');
+      } else if (weekToAdd < 0) {
+        effectiveDate = effectiveDate.subtract(-weekToAdd, 'weeks');
+      }
+  
+      return {
+        number: effectiveDate.date(),
+        name: this.localeData.weekdaysShort(effectiveDate),
+        date: effectiveDate.toDate(),
+        moment: effectiveDate
+      };
+    }
+
+  /** Moves the calendar forward */
+  next() {
+    if (this.canMoveForward && this.displayMode === 'daily') {
       this.firstDayRendered = this.generateCalendarDay(this.firstDayRendered, 1);
+      this.nextDayClicked.emit();
+    } else if (this.canMoveForward && this.displayMode === 'weekly') {
+      this.firstDayRendered = this.generateCalendarWeekly(this.firstDayRendered, 1);
       this.nextDayClicked.emit();
     }
   }
 
-  /** Moves the calendar backward by one day. */
-  prevDayOfWeek() {
-    if (this.canMoveBack) {
+  /** Moves the calendar backward */
+  prev() {
+    if (this.canMoveBack && this.displayMode === 'daily') {
       this.firstDayRendered = this.generateCalendarDay(this.firstDayRendered, -1);
+      this.prevDayClicked.emit();
+    } else if (this.canMoveBack && this.displayMode === 'weekly') {
+      this.firstDayRendered = this.generateCalendarWeekly(this.firstDayRendered, -1);     
       this.prevDayClicked.emit();
     }
   }
@@ -159,10 +206,10 @@ export class IonicHorizontalCalendarComponent {
   /** Handler for when swiping is active and changes offset. */
   swipeMove(event): void {
     if (event.deltaX - this.panExludedDelta > this.scrollStep) {
-      this.prevDayOfWeek();
+      this.prev();
       this.panExludedDelta += this.scrollStep;
     } else if (event.deltaX - this.panExludedDelta < -this.scrollStep) {
-      this.nextDayOfWeek();
+      this.next();
       this.panExludedDelta -= this.scrollStep;
     }
   }
