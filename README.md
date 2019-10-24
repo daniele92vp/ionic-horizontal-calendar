@@ -49,11 +49,11 @@ firstDayAutoSelected | boolean | false | Autoselection of day for today
 displayMode | string | daily | Render day by day or weekly
 
 ###### Following are the Output properties available
-Output | Type
------------- | -------------
-nextDayClicked | function
-prevDayClicked | function
-daySelected | function
+Output | Type | Description
+------------ | ------------- | -------------
+nextDayClicked | function | Emitted when to left or when right arrow clicked
+prevDayClicked | function | Emitted when to right or when left arrow clicked
+daySelected | function | Emitted when a day is selected
 
 ## Customization
 
