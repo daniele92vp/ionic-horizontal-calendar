@@ -17,7 +17,7 @@
 
 <pre>npm i ionic-horizontal-calendar</pre>
 
-## Usage and input available
+## Usage, input and output available
 
 ###### The following example show how to use the ionic-horizontal-calendar
 
