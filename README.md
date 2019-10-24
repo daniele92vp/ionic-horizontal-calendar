@@ -40,7 +40,7 @@
 Input | Type | Default value
 ------------ | -------------
 dayCount  | number | 7
-daysToExclude  | function | (day: CalendarDay) => day.date.getDay() === 6 || day.date.getDay() === 0 || moment(day.date).isBefore(this.minDate)
+daysToExclude  | function | ()
 minDate | any | -
 maxDate | any | -
 scrollSensivity | number | 1.0
