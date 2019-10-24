@@ -20,6 +20,19 @@
 
 ###### The following example show how to use the ionic-horizontal-calendar
 
+<pre>
+<ionic-horizontal-calendar 
+  locale="de" 
+  [minDate]="minDate"
+  class="calendar"
+  [firstDayAutoSelected]="true"
+  displayMode="daily"
+  >
+    <ion-label header #header>
+        Calendar Demo
+    </ion-label>
+</ionic-horizontal-calendar>
+</pre>
 
 ###### The ionic-horizontal-calendar has different option
 
