@@ -1,3 +1,3 @@
 # ionic-horizontal-calendar
 
-![Alt text](C:\Users\ilc\Documents\ionic-horizontal-calendar\pic?raw=true "Title")
+![Alt text](./screenshot/screenshot1.PNG?raw=true "Title")
