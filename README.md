@@ -8,6 +8,7 @@
 
 
 **Customizable calendar with touchable scrolling and arrow to render the next days**
+
 ![A](https://github.com/daniele92vp/ionic-horizontal-calendar/blob/master/screenshot/screenshot1a.png "A")
 ![B](https://github.com/daniele92vp/ionic-horizontal-calendar/blob/master/screenshot/screenshot1b.PNG "B")
 ![C](https://github.com/daniele92vp/ionic-horizontal-calendar/blob/master/screenshot/screenshot1c.PNG "C")
