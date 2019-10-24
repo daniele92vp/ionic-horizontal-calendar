@@ -38,7 +38,7 @@
 ###### Following are the Input properties available
 
 Input | Type | Default value
------------- | -------------
+------------ | ------------- | -------------
 dayCount  | number | 7
 daysToExclude  | function | ()
 minDate | any | -
