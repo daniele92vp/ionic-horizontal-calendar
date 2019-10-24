@@ -37,16 +37,16 @@
 
 ###### Following are the Input properties available
 
-Input | Type | Default value
------------- | ------------- | -------------
-dayCount  | number | 7
-daysToExclude  | function | () => {...}
-minDate | any | -
-maxDate | any | -
-scrollSensivity | number | 1.0
-locale | string | -
-firstDayAutoSelected | boolean | false
-displayMode | string | daily
+Input | Type | Default value | Description
+------------ | ------------- | ------------- | -------------
+dayCount  | number | 7 | Number of display displayed per row
+daysToExclude  | function | () => {...} | Days to exclude from selection
+minDate | any | - | Minimum date to display
+maxDate | any | - | Maximum date to display
+scrollSensivity | number | 1.0 | Sensibility of scrolling
+locale | string | - | Zone to use as locale
+firstDayAutoSelected | boolean | false | Autoselection of day for today
+displayMode | string | daily | Render day by day or weekly
 
 ###### Following are the Output properties available
 Output | Type
