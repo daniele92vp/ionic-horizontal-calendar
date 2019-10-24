@@ -35,7 +35,25 @@
 ```
 
 
-###### The ionic-horizontal-calendar has different option
+###### Following are the Input properties available
+
+Input | Type | Default value
+------------ | -------------
+dayCount  | number | 7
+daysToExclude  | function | (day: CalendarDay) => day.date.getDay() === 6 || day.date.getDay() === 0 || moment(day.date).isBefore(this.minDate)
+minDate | any | -
+maxDate | any | -
+scrollSensivity | number | 1.0
+locale | string | -
+firstDayAutoSelected | boolean | false
+displayMode | string | daily
+
+###### Following are the Output properties available
+Output | Type
+------------ | -------------
+nextDayClicked | function
+prevDayClicked | function
+daySelected | function
 
 ## Customization
 
