@@ -16,6 +16,13 @@
 
 <pre>npm i ionic-horizontal-calendar</pre>
 
+## Usage and input available
+
+###### The following example show how to use the ionic-horizontal-calendar
+
+
+###### The ionic-horizontal-calendar has different option
+
 ## Customization
 
 ###### The following css properties are customizable, simple pass a class and inside of it customize what you prefer
