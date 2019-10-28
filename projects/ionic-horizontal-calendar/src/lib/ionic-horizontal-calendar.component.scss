@@ -47,6 +47,7 @@
 
       .day-selected {
         border-bottom: var(--border-bottom-day-selected, 3px solid red);
+        background-color: var(--background-color-day-selected, rgb(252, 248, 248));
       }
 
       .day-of-week-wrapper {
