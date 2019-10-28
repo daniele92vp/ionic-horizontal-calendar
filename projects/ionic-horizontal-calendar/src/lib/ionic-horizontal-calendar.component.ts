@@ -9,9 +9,10 @@ import {
   ContentChild,
   OnInit
 } from '@angular/core';
-import * as moment from 'moment';
-import { CalendarDay, isCalendarDay, compareCalendarDays } from '../calendar-day';
+import * as _moment from 'moment';
+import { CalendarDay, isCalendarDay, compareCalendarDays } from './calendar-day';
 
+const moment = _moment;
 @Component({
   selector: 'ionic-horizontal-calendar',
   templateUrl: './ionic-horizontal-calendar.component.html',
@@ -66,7 +67,7 @@ export class IonicHorizontalCalendarComponent implements OnInit {
   private initialDateInternal = new Date();
 
   /** Read-only, current selected locale for moment. */
-  private get localeData(): moment.Locale {
+  private get localeData(): _moment.Locale {
     return moment.localeData();
   }
 
@@ -94,10 +95,10 @@ export class IonicHorizontalCalendarComponent implements OnInit {
   @Input() daysToExclude = (day: CalendarDay) => day.date.getDay() === 6 || day.date.getDay() === 0 || moment(day.date).isBefore(this.minDate);
 
   /** Min date allowed. */
-  @Input() minDate: moment.MomentInput;
+  @Input() minDate: _moment.MomentInput;
 
   /** Max date allowed. */
-  @Input() maxDate: moment.MomentInput;
+  @Input() maxDate: _moment.MomentInput;
 
   /** Scrolling sensivity when panning the days. */
   @Input() scrollSensivity = 1.0;
@@ -135,7 +136,7 @@ export class IonicHorizontalCalendarComponent implements OnInit {
   }
 
   /** Generate a CalendarDay object for a date, optionally offsetted by an arbitrary amount of days. */
-  generateCalendarDay(date: moment.MomentInput | CalendarDay, daysToAdd?: number): CalendarDay {
+  generateCalendarDay(date: _moment.MomentInput | CalendarDay, daysToAdd?: number): CalendarDay {
     let effectiveDate = isCalendarDay(date) ? moment(date.moment) : moment(date);
     // Apply days delta to date we're outputting
     if (daysToAdd > 0) {
@@ -153,7 +154,7 @@ export class IonicHorizontalCalendarComponent implements OnInit {
   }
 
     /** Generate a CalendarDay object for a date, optionally offsetted by an arbitrary amount of days. */
-    generateCalendarWeekly(date: moment.MomentInput | CalendarDay, weekToAdd?: number): CalendarDay {
+    generateCalendarWeekly(date: _moment.MomentInput | CalendarDay, weekToAdd?: number): CalendarDay {
       let effectiveDate = isCalendarDay(date) ? moment(date.moment) : moment(date);
       // Apply days delta to date we're outputting
       if (weekToAdd > 0) {

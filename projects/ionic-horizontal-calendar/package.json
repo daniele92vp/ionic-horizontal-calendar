@@ -1,6 +1,6 @@
 {
   "name": "ionic-horizontal-calendar",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "dependencies": {
     "@angular/animations": "~8.2.0",
     "@angular/common": "~8.2.0",
